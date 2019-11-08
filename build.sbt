@@ -23,6 +23,12 @@ lazy val root = (project in file(".")).
       scalaVersion := ScalaVersion,
       version      := "0.1.0-SNAPSHOT"
     )),
+    mainClass in Compile := Some("example.Main"),
+    scalacOptions := Seq(
+      "-deprecation",
+      "-encoding",
+      "UTF-8"
+    ),
     name := "scala-katas",
     libraryDependencies ++= Seq(
       "org.typelevel"      %% "cats-effect"         % CatsEffectVersion,
