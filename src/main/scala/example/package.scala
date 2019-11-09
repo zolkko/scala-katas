@@ -1,10 +1,12 @@
 import cats.effect._
-import fs2.{Chunk, Pipe, Pull, Pure, Stream}
+import fs2.{Chunk, Pipe, Pull, Stream}
 import scala.annotation.tailrec
 
 package object example {
 
-  /** Count line */
+  /**
+    * Count number of lines in the input.
+    */
   def countLines[F[_]: Sync]: Pipe[F, Chunk[Byte], Long] = {
     @tailrec
     def newlines(buffer: Chunk[Byte], n: Int): (Chunk[Byte], Int) = {
@@ -16,7 +18,7 @@ package object example {
       }
     }
 
-    def doPull(buffer: Chunk[Byte], s: Stream[Pure, Chunk[Byte]]): Pull[Pure, Long, Unit] = {
+    def doPull(buffer: Chunk[Byte], s: Stream[F, Chunk[Byte]]): Pull[F, Long, Unit] = {
       s.pull.uncons1.flatMap {
         case Some((byteChunks, tail)) =>
           val (rest, cnt) = newlines(byteChunks, 0)
@@ -32,7 +34,7 @@ package object example {
       }
     }
 
-    (in: Stream[Pure, Chunk[Byte]]) => doPull(Chunk.empty, in).stream
+    (in: Stream[F, Chunk[Byte]]) => doPull(Chunk.empty, in).stream
   }
 
 }
