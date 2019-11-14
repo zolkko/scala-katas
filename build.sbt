@@ -1,18 +1,23 @@
 import sbt._
 import Keys._
 
-// lazy val ScalaVersion      = "2.13.1"
-lazy val ScalaVersion      = "2.12.8"
+// lazy val ScalaVersion    = "2.13.1"
+lazy val ScalaVersion       = "2.12.8"
 
-lazy val CatsVersion       = "2.0.0"
-lazy val CatsEffectVersion = "2.0.0"
-lazy val Fs2Version        = "2.0.1"
-lazy val LogbackVersion    = "1.2.3"
-lazy val Log4CatsVersion   = "1.0.1"
-lazy val ScalaTestVersion  = "3.0.8"
-lazy val ScalaCheckVersion = "1.14.2"
-lazy val BreezeVersion     = "1.0.0"
-lazy val DeclineVersion    = "1.0.0"
+lazy val CatsVersion        = "2.0.0"
+lazy val CatsEffectVersion  = "2.0.0"
+lazy val Fs2Version         = "2.0.1"
+
+lazy val BreezeVersion      = "1.0.0"
+lazy val DeclineVersion     = "1.0.0"
+lazy val RainierVersion     = "0.2.3"
+lazy val RainierCatsVersion = "0.2.3"
+
+lazy val LogbackVersion     = "1.2.3"
+lazy val Log4CatsVersion    = "1.0.1"
+
+lazy val ScalaTestVersion   = "3.0.8"
+lazy val ScalaCheckVersion  = "1.14.2"
 
 lazy val protobufSettings = Seq(
   PB.targets in Compile := Seq(scalapb.gen() -> (sourceManaged in Compile).value)
@@ -41,9 +46,10 @@ lazy val root = (project in file(".")).
       "io.chrisdavenport"  %% "log4cats-core"       % Log4CatsVersion,
       "io.chrisdavenport"  %% "log4cats-slf4j"      % Log4CatsVersion,
 
+      "com.stripe"         %% "rainier-core"        % RainierVersion,
+      "com.stripe"         %% "rainier-cats"        % RainierCatsVersion,
+
       "org.scalatest"      %% "scalatest"           % ScalaTestVersion  % Test,
       "org.scalacheck"     %% "scalacheck"          % ScalaCheckVersion % Test,
-
-      "com.stripe"         %  "rainier-core_2.12"   % "0.2.3"
     ),
   )
