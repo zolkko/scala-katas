@@ -1,7 +1,9 @@
 import sbt._
 import Keys._
 
-lazy val ScalaVersion      = "2.13.1"
+// lazy val ScalaVersion      = "2.13.1"
+lazy val ScalaVersion      = "2.12.8"
+
 lazy val CatsVersion       = "2.0.0"
 lazy val CatsEffectVersion = "2.0.0"
 lazy val Fs2Version        = "2.0.1"
@@ -41,5 +43,7 @@ lazy val root = (project in file(".")).
 
       "org.scalatest"      %% "scalatest"           % ScalaTestVersion  % Test,
       "org.scalacheck"     %% "scalacheck"          % ScalaCheckVersion % Test,
+
+      "com.stripe"         %  "rainier-core_2.12"   % "0.2.3"
     ),
   )
