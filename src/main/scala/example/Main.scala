@@ -4,7 +4,7 @@ import cats.syntax.apply._
 import cats.syntax.functor._
 import cats.effect._
 import com.stripe.rainier.sampler.RNG
-import com.stripe.rainier.repl.{DensityPlot, plot1D}
+import com.stripe.rainier.repl.DensityPlot
 
 object Main extends IOApp with CommandLine with RainierSample {
 
