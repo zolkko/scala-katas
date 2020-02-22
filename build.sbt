@@ -10,7 +10,8 @@ lazy val Fs2Version         = "2.0.1"
 
 lazy val BreezeVersion      = "1.0.0"
 lazy val DeclineVersion     = "1.0.0"
-lazy val RainierVersion     = "0.2.3"
+
+lazy val RainierVersion     = "0.3.0"
 lazy val RainierCatsVersion = "0.2.3"
 
 lazy val LogbackVersion     = "1.2.3"
@@ -24,6 +25,7 @@ lazy val protobufSettings = Seq(
 )
 
 lazy val root = (project in file(".")).
+  enablePlugins(GraalVMNativeImagePlugin).
   settings(
     inThisBuild(List(
       organization := "com.example",
@@ -38,18 +40,18 @@ lazy val root = (project in file(".")).
     ),
     name := "scala-katas",
     libraryDependencies ++= Seq(
-      "org.typelevel"      %% "cats-effect"         % CatsEffectVersion,
-      "co.fs2"             %% "fs2-core"            % Fs2Version,
-      "com.monovore"       %% "decline"             % DeclineVersion,
+      "org.typelevel"      %% "cats-effect"     % CatsEffectVersion,
+      "co.fs2"             %% "fs2-core"        % Fs2Version,
+      "com.monovore"       %% "decline"         % DeclineVersion,
 
-      "ch.qos.logback"     %  "logback-classic"     % LogbackVersion,
-      "io.chrisdavenport"  %% "log4cats-core"       % Log4CatsVersion,
-      "io.chrisdavenport"  %% "log4cats-slf4j"      % Log4CatsVersion,
+      "ch.qos.logback"     %  "logback-classic" % LogbackVersion,
+      "io.chrisdavenport"  %% "log4cats-core"   % Log4CatsVersion,
+      "io.chrisdavenport"  %% "log4cats-slf4j"  % Log4CatsVersion,
 
-      "com.stripe"         %% "rainier-core"        % RainierVersion,
-      "com.stripe"         %% "rainier-cats"        % RainierCatsVersion,
+      "com.stripe"         %% "rainier-core"    % RainierVersion,
+      "com.stripe"         %% "rainier-cats"    % RainierCatsVersion,
 
-      "org.scalatest"      %% "scalatest"           % ScalaTestVersion  % Test,
-      "org.scalacheck"     %% "scalacheck"          % ScalaCheckVersion % Test,
+      "org.scalatest"      %% "scalatest"       % ScalaTestVersion  % Test,
+      "org.scalacheck"     %% "scalacheck"      % ScalaCheckVersion % Test,
     ),
   )
