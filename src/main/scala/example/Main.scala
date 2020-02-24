@@ -2,20 +2,21 @@ package example
 
 import cats.syntax.apply._
 import cats.syntax.functor._
+import cats.syntax.either._
 import cats.effect._
-import com.stripe.rainier.sampler.RNG
-import com.stripe.rainier.repl.DensityPlot
 
-object Main extends IOApp with CommandLine with RainierSample {
 
-  private implicit val rng: RNG = RNG.default
+object Main extends IOApp with CommandLine {
 
   def putStrLn(value: String): IO[Unit] = IO { println(value) }
 
+  def parseArgs(args: List[String]): IO[(Double, Double)] = IO.fromEither {
+    command.parse(args).leftMap(CommandLineError)
+  }
+
   def program(args: List[String]): IO[Unit] = for {
-    x <- doRegression[IO]((0 until 100).map(x => x -> (x + 1)).toList, 4)
-    v <- IO { DensityPlot().plot1D(x.sample().map(_.toDouble)).mkString("\n") }
-    _ <- putStrLn(v)
+    params <- parseArgs(args)
+    _      <- putStrLn(s"arguments: $params")
   } yield ()
 
   def run(args: List[String]): IO[ExitCode] = {

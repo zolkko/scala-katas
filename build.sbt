@@ -1,7 +1,7 @@
 import sbt._
 import Keys._
 
-// lazy val ScalaVersion    = "2.13.1"
+// lazy val ScalaVersion       = "2.13.1"
 lazy val ScalaVersion       = "2.12.8"
 
 lazy val CatsVersion        = "2.0.0"
@@ -13,6 +13,9 @@ lazy val DeclineVersion     = "1.0.0"
 
 lazy val RainierVersion     = "0.3.0"
 lazy val RainierCatsVersion = "0.2.3"
+
+// "com.stripe"         %% "rainier-core"    % RainierVersion
+// "com.stripe"         %% "rainier-cats"    % RainierCatsVersion
 
 lazy val LogbackVersion     = "1.2.3"
 lazy val Log4CatsVersion    = "1.0.1"
@@ -48,10 +51,10 @@ lazy val root = (project in file(".")).
       "io.chrisdavenport"  %% "log4cats-core"   % Log4CatsVersion,
       "io.chrisdavenport"  %% "log4cats-slf4j"  % Log4CatsVersion,
 
-      "com.stripe"         %% "rainier-core"    % RainierVersion,
-      "com.stripe"         %% "rainier-cats"    % RainierCatsVersion,
-
       "org.scalatest"      %% "scalatest"       % ScalaTestVersion  % Test,
       "org.scalacheck"     %% "scalacheck"      % ScalaCheckVersion % Test,
     ),
+    graalVMNativeImageGraalVersion := Some("20.0.0"),
   )
+
+addCommandAlias("graal", "graalvm-native-image:packageBin")
