@@ -10,7 +10,7 @@ object Main extends IOApp with CommandLine {
 
   def putStrLn(value: String): IO[Unit] = IO { println(value) }
 
-  def parseArgs(args: List[String]): IO[(Double, Double)] = IO.fromEither {
+  def parseArgs(args: List[String]): IO[Main.Args] = IO.fromEither {
     command.parse(args).leftMap(CommandLineError)
   }
 

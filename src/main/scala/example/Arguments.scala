@@ -1,4 +1,4 @@
 package example
 
 
-final case class Arguments(file: Int, verbosity: Int)
+final case class Arguments(start: Double, verbosity: Int)

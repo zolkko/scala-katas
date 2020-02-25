@@ -5,13 +5,13 @@ import com.monovore.decline.{Command, Opts}
 
 trait CommandLine {
 
-  type Args = (Double, Double)
+  type Args = Arguments
 
-  private val startOpt: Opts[Double] = Opts.argument[Double](metavar = "start").validate("must be positive") { _ > 0.0 }
+  private val startOpt: Opts[Double] = Opts.argument[Double](metavar = "file").validate("must be positive") { _ > 0.0 }
 
-  private val endOpt: Opts[Double] = Opts.argument[Double](metavar = "end").validate("must be positive") { _ > 0.0 }
+  private val verbosityOpt: Opts[Int] = Opts.argument[Int](metavar = "verbosity").validate("must be positive") { _ > 0 }
 
-  private val allOpts: Opts[Args] = (startOpt, endOpt).tupled
+  private val allOpts: Opts[Args] = (startOpt, verbosityOpt).mapN(Arguments.apply)
 
   val command: Command[Args] = Command(name = "example", header = "example command", helpFlag = true)(allOpts)
 
