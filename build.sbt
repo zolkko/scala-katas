@@ -2,7 +2,7 @@ import sbt._
 import Keys._
 
 // lazy val ScalaVersion       = "2.13.1"
-lazy val ScalaVersion       = "2.12.8"
+lazy val ScalaVersion       = "2.12.11"
 
 lazy val CatsVersion        = "2.0.0"
 lazy val CatsEffectVersion  = "2.0.0"
