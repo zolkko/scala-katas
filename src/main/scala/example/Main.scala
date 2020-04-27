@@ -25,6 +25,8 @@ object Main extends IOApp with CommandLine {
   }
 
   def program(args: List[String]): IO[Unit] = for {
+    lst    <- MakeIOPipeline.mkPipeline
+    _      <- putStrLn(s"List = $lst")
     params <- parseArgs(args)
     _      <- putStrLn(s"arguments: $params")
     act    <- mkActor
