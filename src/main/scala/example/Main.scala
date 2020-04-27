@@ -27,28 +27,35 @@ object Main extends IOApp with CommandLine {
     command.parse(args).leftMap(CommandLineError)
   }
 
-  def program(args: List[String]): IO[Unit] = for {
-    swt    <- Deferred[IO, Unit]
-    fio    <- {
-      val io = putStrLn("before sleep") >>
-        IO.sleep(1.second) >>
-        putStrLn("before switch") >>
-        swt.complete(()) >>
-        putStrLn("after switch")
-      io.start
+  private def mkSwitchFiber(s: Double): IO[(Deferred[IO, Unit], Fiber[IO, Unit])] = for {
+    swt <- Deferred[IO, Unit]
+    fio <- {
+      val timelyTerminate = IO.cancelBoundary >>
+        IO.sleep((s * 1000).toInt.millis) >>
+        IO.cancelBoundary >>
+        swt.complete(())
+      timelyTerminate.start
     }
-    lst    <- MakeIOPipeline.mkPipeline(swt)
-    _ <- fio.cancel
-    // In this setup we do not need to join the fiber.
-    // _      <- fio.join
-    _      <- putStrLn(s"List = $lst")
-    params <- parseArgs(args)
-    _      <- putStrLn(s"arguments: $params")
-    act    <- mkActor
-    _      <- act(1)
-    _      <- act(1)
-    z      <- act(0)
-    _      <- putStrLn(s"result: $z")
+  } yield (swt, fio)
+
+  private def checkRef: IO[Unit] = for {
+    act <- mkActor
+    _   <- act(1)
+    _   <- act(1)
+    z   <- act(0)
+    _   <- putStrLn(s"result: $z")
+  } yield ()
+
+  def program(args: List[String]): IO[Unit] = for {
+    params     <- parseArgs(args)
+    _          <- putStrLn(s"arguments: $params")
+
+    swtFib     <- mkSwitchFiber(params.delay)
+    (swt, fib) = swtFib
+    _          <- MakeIOPipeline.mkPipeline(swt)
+    _          <- fib.cancel
+
+    _          <- checkRef
   } yield ()
 
   def run(args: List[String]): IO[ExitCode] = {
