@@ -1,10 +1,13 @@
 package example
 
+
+import scala.concurrent.duration._
+import cats.syntax.flatMap._
 import cats.syntax.apply._
 import cats.syntax.functor._
 import cats.syntax.either._
 import cats.effect._
-import cats.effect.concurrent.Ref
+import cats.effect.concurrent.{Ref, Deferred}
 
 
 object Main extends IOApp with CommandLine {
@@ -25,7 +28,19 @@ object Main extends IOApp with CommandLine {
   }
 
   def program(args: List[String]): IO[Unit] = for {
-    lst    <- MakeIOPipeline.mkPipeline
+    swt    <- Deferred[IO, Unit]
+    fio    <- {
+      val io = putStrLn("before sleep") >>
+        IO.sleep(1.second) >>
+        putStrLn("before switch") >>
+        swt.complete(()) >>
+        putStrLn("after switch")
+      io.start
+    }
+    lst    <- MakeIOPipeline.mkPipeline(swt)
+    _ <- fio.cancel
+    // In this setup we do not need to join the fiber.
+    // _      <- fio.join
     _      <- putStrLn(s"List = $lst")
     params <- parseArgs(args)
     _      <- putStrLn(s"arguments: $params")
