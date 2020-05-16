@@ -43,4 +43,19 @@ class MergeSortSpec extends FlatSpec with Matchers {
     result should contain theSameElementsInOrderAs Seq(1, 2, 3, 3, 3, 4, 4, 5)
   }
 
+  "sort" should "sort empty arrays" in {
+    val result = MergeSort.sort(Vector.empty[Int])
+    result should have size (0)
+  }
+
+  it should "sort even" in {
+    val result = MergeSort.sort(Vector(4, 3, 2, 1))
+    result should contain theSameElementsInOrderAs Vector(1, 2, 3, 4)
+  }
+
+  it should "sort odd" in {
+    val result = MergeSort.sort(Vector(2, 3, 1))
+    result should contain theSameElementsInOrderAs Vector(1, 2, 3)
+  }
+
 }

@@ -27,4 +27,29 @@ object MergeSort {
     res.result()
   }
 
+  def sort[A, F[A] <: Iterable[A]](value: F[A])(implicit ord: Ordering[A]): Vector[A] = {
+    val valueSize = value.size
+    if (valueSize == 0) {
+      Vector.empty
+    } else if (valueSize == 1) {
+      value.toVector
+    } else if (valueSize == 2) {
+      val head = value.head
+      val last = value.last
+      if (ord.lteq(head, last)) {
+        Vector(head, last)
+      } else {
+        Vector(last, head)
+      }
+    } else {
+      val halfSize = valueSize / 2
+      val (a, b) = value.splitAt(halfSize)
+
+      val aSorted = sort(a)
+      val bSorted = sort(b)
+
+      merge(aSorted, bSorted)
+    }
+  }
+
 }
