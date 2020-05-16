@@ -2,6 +2,19 @@ package example
 
 object MergeSort {
 
+  /**
+   * The number of micro operation inside of this function is
+   *
+   * ```
+   * min(|a|, |b|) + rest(|a|) + rest(|b|) => |a| + |b|
+   * ```
+   *
+   * Number of operations inside the while loop is four, plus two operation of initialization.
+   *
+   * ```
+   * (|a| + |b|) * 4 + 2 <= 6n (see the text book).
+   * ```
+   */
   def merge[A, F[A] <: Iterable[A]](a: F[A], b: F[A])(implicit ord: Ordering[A]): Vector[A] = {
     val res = Vector.newBuilder[A]
 
