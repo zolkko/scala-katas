@@ -20,5 +20,10 @@ def measure[A](computation: MyIO[A]): MyIO[Long] = {
 
 @main
 def main =
-  val elapTime = measure(MyIO { () => Thread.sleep(1000) }).unsafeRun()
-  print(s"It took ${elapTime} mills to run the MyIO")
+  val program = for {
+    n <- MyIO { () => scala.io.StdIn.readLine("Enter your name: ")  }
+    elapTime <- measure(MyIO { () => Thread.sleep(1000) })
+    _ <- MyIO { () => println(s"It took ${elapTime} mills to run the MyIO for $n") }
+  } yield ()
+  program.unsafeRun()
+  
