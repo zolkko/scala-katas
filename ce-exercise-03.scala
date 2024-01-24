@@ -15,6 +15,10 @@ def try2IO[A](value: Try[A]): IO[A] =
 def either2IO[A](value: Either[Throwable, A]): IO[A] =
   value.fold(IO.raiseError, IO.delay)
 
+def handleIOError[A](io: IO[A])(handler: Throwable => A): IO[A] = io.handleError(handler)
+
+def handleIOErrorWith[A](io: IO[A])(handler: Throwable => IO[A]): IO[A] = io.handleErrorWith(handler)
+
 @main
 def main =
   import cats.effect.unsafe.implicits.global
