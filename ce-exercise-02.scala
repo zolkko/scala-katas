@@ -24,15 +24,15 @@ def  fibonacci(n: Int): IO[BigInt] =
   if n <= 0 then IO.pure(BigInt(0))
   else if n == 1 || n == 2 then IO.pure(BigInt(1))
   else for
-    a <- fibonacci(n - 1)
-    b <- fibonacci(n - 2)
+    a <- IO(fibonacci(n - 1)).flatten
+    b <- IO(fibonacci(n - 2)).flatten
   yield a + b
 
 object Main extends IOApp.Simple:
 
   def run: IO[Unit] =
     val subProgram = for
-      x <- fibonacci(9)
+      x <- fibonacci(40)
       _ <- IO { println(s"fibo $x") }
       _ <- sequenceTakeLast(IO.pure(1), IO.pure("123")).map(println)
       _ <- sequenceTakeFirst(IO.pure(1), IO.pure("321")).map(println)
