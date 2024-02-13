@@ -53,8 +53,8 @@ object DiningPhilosophers extends IOApp.Simple:
         chopsticks  <- (1 to 5).toList.traverse(_ => Semaphore[IO](1))
         // dead locks...
         _ <- (0 to 4).toList.parTraverse { i =>
-            val first = chopsticks(i)
-            val second = chopsticks((i + 1) % 5)
+            val first = chopsticks(i % 2)
+            val second = chopsticks((i + 1) % 2) // (i + 1) % 5)
             philosopher(s"$i", first, second)(using random)
         }.void
         // no dead lock
