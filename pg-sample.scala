@@ -24,7 +24,7 @@ object Main extends IOApp.Simple:
 
   val nameQuery = sql"SELECT 'testing', 'demo'::varchar(10)"
 
-  val fieldsDecoder: Decoder[Fields] = (text ~ varchar(10)).to[Fields]
+  val fieldsDecoder: Decoder[Fields] = (text *: varchar(10)).to[Fields]
 
   val frag1: Fragment[Void] = sql"SELECT * FROM product as p "
   val frag2: Fragment[Void] = sql"WHERE p.price > 2"
